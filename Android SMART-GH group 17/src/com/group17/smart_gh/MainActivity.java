@@ -1,16 +1,5 @@
 package com.group17.smart_gh;
 
-import com.graphhopper.GHRequest;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,6 +53,7 @@ public class MainActivity extends ActionBarActivity{
 		EditText editText = (EditText) findViewById(R.id.editText1);
 		String to = editText.getText().toString();
 		Log.i("SearchRoute", to);
+		
 		editText = (EditText) findViewById(R.id.editText2);
 		String from = editText.getText().toString();
 		Log.i("SearchRoute", from);
@@ -73,49 +63,28 @@ public class MainActivity extends ActionBarActivity{
 
 		Log.i("SearchRoute",routeSelected);
 		
-		String places = "point=" + 53.341841 + "," + -6.250191 + "&";
-		places += "point=" + 53.291797 + "," + -6.136723 + "&";
+		// hardcoded test.
+		String temp = "http://172.16.160.130:8989/route/"
+				//From
+				+ "?point=53.340662%2C-6.243925"
+				//To
+				+ "&point=53.338305%2C-6.237595"
+				//vehicle can be car, bike or foot.
+				+ "&vehicle=foot"
+				//weighting can be:least_noise,least_air_pollution,fastest or shortest.
+				+ "&weighting=least_air_pollution"
+				+ "&locale=en-US";
 		
-		String url = "http://172.16.160.129:8989/route"
-                + "?"
-                + places
-                + "&type=json"
-                + "&points_encoded=" + true
-                // + "&min_path_precision=" + request.getHint("douglas.minprecision", 1)
-                + "&algo=" + routeSelected
-                + "&elevation=" + false;
+		requestRoute test = new requestRoute(temp);
+		test.sendRoute();
 		
-		URL temp = new URL(url);
-		Log.i("","Creating Connection");
-		HttpURLConnection connection = (HttpURLConnection) temp.openConnection();
-
-		Log.i("","Connection Created");
+		Log.i("", test.getResults());
 		
-		connection.setDoOutput(true);
-		connection.setRequestMethod("GET");
-		connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		requestRoute test2 = new requestRoute(53.340662, -6.243925, 53.338305, -6.237595, routeSelected, "foot");
+		test2.sendRoute();	
+		Log.i("", test2.getResults());
 		
-		connection.connect();
-		
-		Log.i("","Creating BufferedReader");
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(connection.getInputStream()));
-		Log.i("","BufferedReader Created");
-		
-		String inputLine;
-		StringBuffer response = new StringBuffer();
- 
-		Log.i("","Waiting for input");
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
-		Log.i("","Got input");
- 
-		//print result
-		Log.i("", response.toString());
-		
-		
+		if(test.getResults().equals(test2.getResults())) Log.i("", "Strings are equal!");
 	
 	}
 }
