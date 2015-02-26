@@ -1,5 +1,6 @@
 package com.group17.smart_gh;
 
+import com.graphhopper;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -76,15 +77,14 @@ public class MainActivity extends ActionBarActivity{
 				+ "&locale=en-US";
 		
 		requestRoute test = new requestRoute(temp);
-		test.sendRoute();
+		String route = test.sendRoute();
 		
-		Log.i("", test.getResults());
+		Log.i("", route);
 		
 		requestRoute test2 = new requestRoute(53.340662, -6.243925, 53.338305, -6.237595, routeSelected, "foot");
-		test2.sendRoute();	
-		Log.i("", test2.getResults());
+		String route2 = test2.sendRoute();	
+		Log.i("", route2);
 		
-		if(test.getResults().equals(test2.getResults())) Log.i("", "Strings are equal!");
-	
+		if(route.equals(route2)) Log.i("", "Strings are equal!");
 	}
 }

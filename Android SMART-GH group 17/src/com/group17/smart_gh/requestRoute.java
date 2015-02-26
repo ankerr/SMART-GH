@@ -29,7 +29,7 @@ public class requestRoute{
 		url += "&locale=en-US";		
 	}
 	
-	public void sendRoute() throws Exception{
+	public String sendRoute() throws Exception{
 		new Thread(new Runnable(){
 
 			public void run(){		
@@ -60,16 +60,12 @@ public class requestRoute{
 				}
 			}
 		}).start();
-				
-
+		
+		return results;
+			
 	}
 	
 	public String getResults(){
-		while(results.equals(""))
-		{
-			//Waiting for the thread to finish.
-			//*Possible infinite loop if thread can't achieve results*
-		}
 		return results;
 	}
 }
